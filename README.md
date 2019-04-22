@@ -5255,11 +5255,16 @@ y_predict = model.predict(X_test)
 
 # G. Model Interpretation
 
-### 1. F-1 Score weighted for all the classifications
+### 1. F-1 Score 
 
-- Measures accuracy by considering both the Precision and the Recall; closer to 1 is ideal
+- I chose the F1 score because it shows the balance between precision (exactness) and recall (completeness) by considering both measurements in its calculation. 
+    - A low Precision indicates many False Positives
+    - A low Recall indicates many False Negatives
 
-- In this case, the f1_score is weighted based on the number of data points in each category
+- Furthermore, I could break down the F-1 scores by the 4 categories, or look at a weighted number based on the number of data points in each category
+
+- The best F-1 score is closest to 1
+
 
 - For non weighted F-1 score, the model was much better at predicting the zip codes receiving "Very High" School Construction Awards per project (.90) and worst at predicting the "High" category (.29)
 
@@ -5305,6 +5310,7 @@ print(classification_report(y_test, y_predict))
 ### 2. Finding a better N (neighbor) value based on F1 Score
 - Model will perform best with 6 neighbors choosing the category
 - The new F-1 scores showed an improvement in the lower categories
+    - The KNN model performed best on the Very High and Low categories, but not as well on the 2 middle categories
 
 
 ```python
@@ -5332,7 +5338,7 @@ plt.show()
 ```
 
 
-![png](NYC_Open_Data_Case_Study_files/NYC_Open_Data_Case_Study_148_0.png)
+![png](NYC_Open_Data_Case_Study_files/NYC_Open_Data_Case_Study_149_0.png)
 
 
 
@@ -5380,8 +5386,8 @@ print(classification_report(y_test, y_predict))
 
 # H. Analysis 
 
-I hypothesized that NYC's most expensive neighborhoods received the most school capital construction funding by project.  
+I hypothesized that NYC's most expensive neighborhoods received the most school construction funding by project. My hypothesis was incorrect; the correlation between mean value per square foot by neighborhood and mean construction award per project by neighborhood was nearly zero. From a school funding and resources allocation perspective, it was a reasurring conclusion.
 
-My hypothesis was incorrect; the correlation between mean value per square foot by neighborhood and mean construction award per project was very close to zero.
+Initially, I believed my data to have a linear relationship and I assumed I would use a parametric machine learning algorithm when it came time to model my data. However, once I discovered there was no apparent relationship between my features, I checked the distribution of my data overall, using the Shapiro Wilk and D’Agostino’s K^2 Tests. My data failed these normality tests, so I had to choose a non-parametric machine learning algorithm. Non-parametric models do not assume data follows a normal distribution, because they don't assume the data follows *any* distribution. I chose K-nearest Neighbors to classify between 4 categories of school construction dollar amounts (low, medium, high, and very high). The model worked best at distinguishing the Very High category, based on that category's F-1 score. 
 
-After 
+In the future, I would like to run a variety of non-parametric models, such as Decision Trees or Support Vector Machines to see which one would perform best. I would also like to include more complex features to the data set, such as the 'Building Class category' or 'Project type'.
